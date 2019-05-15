@@ -61,9 +61,7 @@ public:
      *  @brief Constructeur par défaut. Construit un arbre vide
      */
     BinarySearchTree() : _root(nullptr)
-    {
-        this->_root = nullptr;
-    }
+    {}
 
     /**
      *  @brief Constucteur de copie.
@@ -166,7 +164,20 @@ private:
     // la fonction peut modifier x, reçu par référence, si nécessaire
     //
     static bool insert(Node*& r, const_reference key) {
-        /* ... */
+        // This is a leaf, we can create the new node
+        if(r == nullptr){
+            r = new Node{key};
+        }
+        // Go to left branch (key to add lower than the node key)
+        else if(key < r->key){
+            insert(r->left, key);
+        }
+        // Go to right branch (key to add greater than the node key)
+        else if(key > r->key){
+            insert(r->right, key);
+        }
+        // Else : the key already is on the tree
+
         return false;
     }
 

@@ -241,7 +241,17 @@ public:
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
     //
     const_reference min() const {
-        /* ... */
+        if(_root == nullptr){
+            throw logic_error("Impossible to search the min key in an empty tree");
+        }
+
+        Node* currentNode = _root;
+        // Loop through all left node (min branch)
+        while(currentNode->left != nullptr){
+            currentNode = currentNode->left;
+        }
+
+        return currentNode->key;
     }
 
     //

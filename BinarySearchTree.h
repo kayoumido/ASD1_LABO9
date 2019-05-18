@@ -61,7 +61,9 @@ public:
      *  @brief Constructeur par défaut. Construit un arbre vide
      */
     BinarySearchTree() : _root(nullptr)
-    {}
+    {
+        // Nothing to do...
+    }
 
     /**
      *  @brief Constucteur de copie.
@@ -133,7 +135,18 @@ private:
     //          peut éventuellement valoir nullptr
     //
     static void deleteSubTree(Node* r) noexcept {
-        /* ... */
+        // Go inside all left Node (if not a leaf)
+        if(r->left != nullptr){
+            deleteSubTree(r->left);
+        }
+
+        // At this point, we finished to go inside all left node, we can go inside right node (if not a leaf)
+        if(r->right != nullptr){
+            deleteSubTree(r->right);
+        }
+
+        // We have a leaf, so we can delete it
+        r->~Node();
     }
 
 public:

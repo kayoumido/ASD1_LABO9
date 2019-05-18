@@ -17,5 +17,9 @@ int main() {
     tree.deleteMin();
     tree.display();
 
+
+    tree.deleteElement(10);
+    tree.display();
+
     return EXIT_SUCCESS;
 }

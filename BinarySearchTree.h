@@ -330,8 +330,53 @@ private:
     // retourne vrai
     //
     static bool deleteElement( Node*& r, const_reference key) noexcept {
-        /* ... */
-        return false;
+        // Key not found
+        if(r == nullptr){
+            return false;
+        }
+
+        // Need to search in the left subtree
+        if(key < r->key){
+            deleteElement(r->left, key);
+        }
+        // Need to search in the right subtree
+        else if(key > r->key){
+            deleteElement(r->right, key);
+        }
+        // Key found !
+        else{
+            // If left or right child is nullptr, destroy the current node and the opposite child takes the place of the current node
+            if(r->left == nullptr){
+                r->~Node();
+                r = r->right;
+            }else if(r->right == nullptr){
+                r->~Node();
+                r = r->left;
+            }
+            // Hardest case, do the Hibbard technique
+            else{
+                // Call a method to fetch the minimum node of the right subtree
+                Node*& minNode = chercherMinNode(r->right);
+                // Swap the key of minNode and currentNode
+                value_type tmp = minNode->key;
+                (reference)minNode->key = r->key; // Force the const value to change
+                (reference)r->key = tmp; // Force the const value to change
+                // Delete the minElement of the right subtree that is now the element we swapped
+                deleteMin(r->right);
+            }
+            return true;
+        }
+    }
+
+    static Node*& chercherMinNode(Node*& r){
+        // Recursive call while we are not the node with minimum key
+        if(r->left != nullptr){
+            chercherMinNode(r->left);
+        }
+            // Here, the node is the node with the minimum key
+        else{
+            return r;
+        }
     }
 
 public:

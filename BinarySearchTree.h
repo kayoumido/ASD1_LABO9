@@ -57,6 +57,7 @@ private:
     Node* _root;
 
 public:
+
     /**
      *  @brief Constructeur par défaut. Construit un arbre vide
      */
@@ -530,7 +531,7 @@ public:
     //
     template < typename Fn >
     void visitPre (Fn f) {
-        /* ... */
+        visitPre(f, _root);
     }
 
     //
@@ -542,7 +543,7 @@ public:
     //
     template < typename Fn >
     void visitSym (Fn f) {
-        /* ... */
+        visitSym(f, _root);
     }
 
     //
@@ -554,10 +555,62 @@ public:
     //
     template < typename Fn >
     void visitPost (Fn f) {
-        /* ... */
+        visitPost(f, _root);
+    }
+private:
+    //
+    // @brief Parcours pre-ordonne de l'arbre
+    //
+    // @param f une fonction capable d'être appelée en recevant une cle
+    //          en parametre. Pour le noeud n courrant, l'appel sera
+    //          f(n->key);
+    // @param r La racine du sous arbre
+    //
+    template < typename Fn >
+    static void visitPre (Fn f, Node* r) {
+        if(r != nullptr){
+            f(r->key);
+            visitPre(f, r->left);
+            visitPre(f, r->right);
+        }
+    }
+
+    //
+    // @brief Parcours symétrique de l'arbre
+    //
+    // @param f une fonction capable d'être appelée en recevant une cle
+    //          en parametre. Pour le noeud n courrant, l'appel sera
+    //          f(n->key);
+    // @param r La racine du sous arbre
+    //
+    template < typename Fn >
+    void visitSym (Fn f, Node* r) {
+        if(r != nullptr){
+            visitSym(f, r->left);
+            f(r->key);
+            visitSym(f, r->right);
+        }
+    }
+
+    //
+    // @brief Parcours post-ordonne de l'arbre
+    //
+    // @param f une fonction capable d'être appelée en recevant une cle
+    //          en parametre. Pour le noeud n courrant, l'appel sera
+    //          f(n->key);
+    // @param r La racine du sous arbre
+    //
+    template < typename Fn >
+    void visitPost (Fn f, Node* r) {
+        if(r != nullptr){
+            visitPost(f, r->left);
+            visitPost(f, r->right);
+            f(r->key);
+        }
     }
 
 
+public:
     //
     // Les fonctions suivantes sont fournies pour permettre de tester votre classe
     // Merci de ne rien modifier au dela de cette ligne

@@ -14,6 +14,8 @@ int main() {
     cout << boolalpha << tree.contains(7) << endl;
 
     cout << "Min : " << tree.min() << endl;
+    tree.deleteMin();
+    tree.display();
 
     return EXIT_SUCCESS;
 }

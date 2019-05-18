@@ -260,7 +260,7 @@ public:
             throw logic_error("Impossible to delete the min key in an empty tree");
         }
 
-
+        deleteMin(_root);
     }
 
 
@@ -292,6 +292,30 @@ private:
             min(r->left);
         }else{
             return r->key;
+        }
+    }
+
+    //
+    // @brief Supprime le plus petit element de l'arbre.
+    // @param r La racine du sous arbre
+    //
+    static void deleteMin(Node*& r) {
+        // Recursive call while we are not the node with minimum key
+        if(r->left != nullptr){
+            deleteMin(r->left);
+        }
+        // Here, the node is the node with the minimum key
+        else{
+            // Call the node destructor
+            r->~Node();
+            // The node has right child -> Right child takes the place of the current node
+            if(r->right != nullptr){
+                r = r->right;
+            }
+            // The node with minimum key is a leaf, set it as nullptr
+            else{
+                r = nullptr;
+            }
         }
     }
 

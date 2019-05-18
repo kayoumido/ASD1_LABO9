@@ -245,13 +245,7 @@ public:
             throw logic_error("Impossible to search the min key in an empty tree");
         }
 
-        Node* currentNode = _root;
-        // Loop through all left node (min branch)
-        while(currentNode->left != nullptr){
-            currentNode = currentNode->left;
-        }
-
-        return currentNode->key;
+        return min(_root);
     }
 
     //
@@ -262,7 +256,11 @@ public:
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
     //
     void deleteMin() {
-        /* ... */
+        if(_root == nullptr){
+            throw logic_error("Impossible to delete the min key in an empty tree");
+        }
+
+
     }
 
 
@@ -283,6 +281,20 @@ public:
     }
 
 private:
+
+    //
+    // @brief Recherche de la cle minimale.
+    // @param r la racine du sous arbre
+    // @return une const reference a la cle minimale
+    //
+    static const_reference min(Node* r){
+        if(r->left != nullptr){
+            min(r->left);
+        }else{
+            return r->key;
+        }
+    }
+
     //
     // @brief Supprime l'element de cle key du sous arbre.
     //

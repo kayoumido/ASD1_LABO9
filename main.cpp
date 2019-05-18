@@ -11,5 +11,7 @@ int main() {
     tree.insert(8);
     tree.display();
 
+    cout << boolalpha << tree.contains(7) << endl;
+
     return EXIT_SUCCESS;
 }

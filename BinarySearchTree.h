@@ -219,8 +219,15 @@ private:
     // @return vrai si la cle trouvee, faux sinon.
     //
     static bool contains(Node* r, const_reference key) noexcept {
-        /* ... */
-        return false;
+        if(r == nullptr){
+            return false;
+        }else if(key < r->key){
+            contains(r->left, key);
+        }else if(key > r->key){
+            contains(r->right, key);
+        }else{
+            return true;
+        }
     }
 
 public:

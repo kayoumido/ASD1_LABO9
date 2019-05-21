@@ -15,14 +15,14 @@
 
 using namespace std;
 
-template < typename T >
+template<typename T>
 class BinarySearchTree {
 public:
 
     using value_type = T;
-    using reference = T&;
-    using const_reference = const T&;
-    using pointer = T*;
+    using reference = T &;
+    using const_reference = const T &;
+    using pointer = T *;
 
 private:
     /**
@@ -32,37 +32,37 @@ private:
      */
     struct Node {
         const value_type key; // clé non modifiable
-        Node* right;          // sous arbre avec des cles plus grandes
-        Node* left;           // sous arbre avec des cles plus petites
+        Node *right;          // sous arbre avec des cles plus grandes
+        Node *left;           // sous arbre avec des cles plus petites
         size_t nbElements;    // nombre de noeuds dans le sous arbre dont
         // ce noeud est la racine
 
         Node(const_reference key)  // seul constructeur disponible. key est obligatoire
-                : key(key), right(nullptr), left(nullptr), nbElements(1)
-        {
+                : key(key), right(nullptr), left(nullptr), nbElements(1) {
             cout << "(C" << key << ") ";
         }
+
         ~Node()               // destructeur
         {
             cout << "(D" << key << ") ";
         }
+
         Node() = delete;             // pas de construction par défaut
-        Node(const Node&) = delete;  // pas de construction par copie
-        Node(Node&&) = delete;       // pas de construction par déplacement
+        Node(const Node &) = delete;  // pas de construction par copie
+        Node(Node &&) = delete;       // pas de construction par déplacement
     };
 
     /**
      *  @brief  Racine de l'arbre. nullptr si l'arbre est vide
      */
-    Node* _root;
+    Node *_root;
 
 public:
 
     /**
      *  @brief Constructeur par défaut. Construit un arbre vide
      */
-    BinarySearchTree() : _root(nullptr)
-    {
+    BinarySearchTree() : _root(nullptr) {
         // Nothing to do...
     }
 
@@ -72,7 +72,7 @@ public:
      *  @param other le BinarySearchTree à copier
      *
      */
-    BinarySearchTree( BinarySearchTree& other ) {
+    BinarySearchTree(BinarySearchTree &other) {
         /* ... */
     }
 
@@ -82,7 +82,7 @@ public:
      *  @param other le BinarySearchTree à copier
      *
      */
-    BinarySearchTree& operator= ( const BinarySearchTree& other ) {
+    BinarySearchTree &operator=(const BinarySearchTree &other) {
         /* ... */
         return *this;
     }
@@ -93,7 +93,7 @@ public:
      *  @param other le BST avec lequel on echange le contenu
      *
      */
-    void swap(BinarySearchTree& other ) noexcept {
+    void swap(BinarySearchTree &other) noexcept {
         /* ... */
     }
 
@@ -103,7 +103,7 @@ public:
      *  @param other le BST dont on vole le contenu
      *
      */
-    BinarySearchTree( BinarySearchTree&& other ) noexcept {
+    BinarySearchTree(BinarySearchTree &&other) noexcept {
         /* ... */
     }
 
@@ -113,7 +113,7 @@ public:
      *  @param other le BST dont on vole le contenu
      *
      */
-    BinarySearchTree& operator= ( BinarySearchTree&& other ) noexcept {
+    BinarySearchTree &operator=(BinarySearchTree &&other) noexcept {
         /* ... */
         return *this;
     }
@@ -125,7 +125,7 @@ public:
     // récursive privée deleteSubTree(Node*)
     //
     ~BinarySearchTree() {
-        deleteSubTree( _root );
+        deleteSubTree(_root);
     }
 
 private:
@@ -135,14 +135,14 @@ private:
     // @param r la racine du sous arbre à détruire.
     //          peut éventuellement valoir nullptr
     //
-    static void deleteSubTree(Node* r) noexcept {
+    static void deleteSubTree(Node *r) noexcept {
         // Go inside all left Node (if not a leaf)
-        if(r->left != nullptr){
+        if (r->left != nullptr) {
             deleteSubTree(r->left);
         }
 
         // At this point, we finished to go inside all left node, we can go inside right node (if not a leaf)
-        if(r->right != nullptr){
+        if (r->right != nullptr) {
             deleteSubTree(r->right);
         }
 
@@ -159,8 +159,8 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée insert(Node*&,const_reference)
     //
-    void insert( const_reference key) {
-        insert(_root,key);
+    void insert(const_reference key) {
+        insert(_root, key);
     }
 
 private:
@@ -177,17 +177,17 @@ private:
     // x peut éventuellement valoir nullptr en entrée.
     // la fonction peut modifier x, reçu par référence, si nécessaire
     //
-    static bool insert(Node*& r, const_reference key) {
+    static bool insert(Node *&r, const_reference key) {
         // This is a leaf, we can create the new node
-        if(r == nullptr){
+        if (r == nullptr) {
             r = new Node{key};
         }
-        // Go to left branch (key to add lower than the node key)
-        else if(key < r->key){
+            // Go to left branch (key to add lower than the node key)
+        else if (key < r->key) {
             insert(r->left, key);
         }
-        // Go to right branch (key to add greater than the node key)
-        else if(key > r->key){
+            // Go to right branch (key to add greater than the node key)
+        else if (key > r->key) {
             insert(r->right, key);
         }
         // Else : the key already is on the tree
@@ -206,8 +206,8 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée contains(Node*,const_reference)
     //
-    bool contains( const_reference key ) const noexcept {
-        return contains(_root,key);
+    bool contains(const_reference key) const noexcept {
+        return contains(_root, key);
     }
 
 private:
@@ -219,14 +219,14 @@ private:
     //
     // @return vrai si la cle trouvee, faux sinon.
     //
-    static bool contains(Node* r, const_reference key) noexcept {
-        if(r == nullptr){
+    static bool contains(Node *r, const_reference key) noexcept {
+        if (r == nullptr) {
             return false;
-        }else if(key < r->key){
+        } else if (key < r->key) {
             contains(r->left, key);
-        }else if(key > r->key){
+        } else if (key > r->key) {
             contains(r->right, key);
-        }else{
+        } else {
             return true;
         }
     }
@@ -242,7 +242,7 @@ public:
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
     //
     const_reference min() const {
-        if(_root == nullptr){
+        if (_root == nullptr) {
             throw logic_error("Impossible to search the min key in an empty tree");
         }
 
@@ -257,7 +257,7 @@ public:
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
     //
     void deleteMin() {
-        if(_root == nullptr){
+        if (_root == nullptr) {
             throw logic_error("Impossible to delete the min key in an empty tree");
         }
 
@@ -277,8 +277,8 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée deleteElement(Node*&,const_reference)
     //
-    bool deleteElement( const_reference key) noexcept {
-        return deleteElement( _root, key );
+    bool deleteElement(const_reference key) noexcept {
+        return deleteElement(_root, key);
     }
 
 private:
@@ -288,10 +288,10 @@ private:
     // @param r la racine du sous arbre
     // @return une const reference a la cle minimale
     //
-    static const_reference min(Node* r){
-        if(r->left != nullptr){
+    static const_reference min(Node *r) {
+        if (r->left != nullptr) {
             min(r->left);
-        }else{
+        } else {
             return r->key;
         }
     }
@@ -300,21 +300,21 @@ private:
     // @brief Supprime le plus petit element de l'arbre.
     // @param r La racine du sous arbre
     //
-    static void deleteMin(Node*& r) {
+    static void deleteMin(Node *&r) {
         // Recursive call while we are not the node with minimum key
-        if(r->left != nullptr){
+        if (r->left != nullptr) {
             deleteMin(r->left);
         }
-        // Here, the node is the node with the minimum key
-        else{
+            // Here, the node is the node with the minimum key
+        else {
             // Call the node destructor
             r->~Node();
             // The node has right child -> Right child takes the place of the current node
-            if(r->right != nullptr){
+            if (r->right != nullptr) {
                 r = r->right;
             }
-            // The node with minimum key is a leaf, set it as nullptr
-            else{
+                // The node with minimum key is a leaf, set it as nullptr
+            else {
                 r = nullptr;
             }
         }
@@ -330,38 +330,38 @@ private:
     // l'arbre mais retourne false. Si l'element est present, elle
     // retourne vrai
     //
-    static bool deleteElement( Node*& r, const_reference key) noexcept {
+    static bool deleteElement(Node *&r, const_reference key) noexcept {
         // Key not found
-        if(r == nullptr){
+        if (r == nullptr) {
             return false;
         }
 
         // Need to search in the left subtree
-        if(key < r->key){
+        if (key < r->key) {
             deleteElement(r->left, key);
         }
-        // Need to search in the right subtree
-        else if(key > r->key){
+            // Need to search in the right subtree
+        else if (key > r->key) {
             deleteElement(r->right, key);
         }
-        // Key found !
-        else{
+            // Key found !
+        else {
             // If left or right child is nullptr, destroy the current node and the opposite child takes the place of the current node
-            if(r->left == nullptr){
+            if (r->left == nullptr) {
                 r->~Node();
                 r = r->right;
-            }else if(r->right == nullptr){
+            } else if (r->right == nullptr) {
                 r->~Node();
                 r = r->left;
             }
-            // Hardest case, do the Hibbard technique
-            else{
+                // Hardest case, do the Hibbard technique
+            else {
                 // Call a method to fetch the minimum node of the right subtree
-                Node*& minNode = chercherMinNode(r->right);
+                Node *&minNode = chercherMinNode(r->right);
                 // Swap the key of minNode and currentNode
                 value_type tmp = minNode->key;
-                (reference)minNode->key = r->key; // Force the const value to change
-                (reference)r->key = tmp; // Force the const value to change
+                (reference) minNode->key = r->key; // Force the const value to change
+                (reference) r->key = tmp; // Force the const value to change
                 // Delete the minElement of the right subtree that is now the element we swapped
                 deleteMin(r->right);
             }
@@ -369,13 +369,13 @@ private:
         }
     }
 
-    static Node*& chercherMinNode(Node*& r){
+    static Node *&chercherMinNode(Node *&r) {
         // Recursive call while we are not the node with minimum key
-        if(r->left != nullptr){
+        if (r->left != nullptr) {
             chercherMinNode(r->left);
         }
             // Here, the node is the node with the minimum key
-        else{
+        else {
             return r;
         }
     }
@@ -404,7 +404,7 @@ public:
     //
     const_reference nth_element(size_t n) const {
         /* ... */
-        return nth_element(_root,n);
+        return nth_element(_root, n);
     }
 
 private:
@@ -417,7 +417,7 @@ private:
     // @return une reference a la cle en position n par ordre croissant des
     // elements
     //
-    static const_reference nth_element(Node* r, size_t n) noexcept {
+    static const_reference nth_element(Node *r, size_t n) noexcept {
         assert(r != nullptr);
         /* ... */
         return -1;
@@ -435,7 +435,7 @@ public:
     // récursive privée rank(Node*,const_reference)
     //
     size_t rank(const_reference key) const noexcept {
-        return rank(_root,key);
+        return rank(_root, key);
     }
 
 private:
@@ -447,7 +447,7 @@ private:
     //
     // @return la position entre 0 et size()-1, size_t(-1) si la cle est absente
     //
-    static size_t rank(Node* r, const_reference key) noexcept {
+    static size_t rank(Node *r, const_reference key) noexcept {
         /* ... */
         return -1;
     }
@@ -467,8 +467,8 @@ public:
     //
     void linearize() noexcept {
         size_t cnt = 0;
-        Node* list = nullptr;
-        linearize(_root,list,cnt);
+        Node *list = nullptr;
+        linearize(_root, list, cnt);
         _root = list;
     }
 
@@ -485,7 +485,7 @@ private:
     //             d'elements du sous-arbre de racine tree. Cependant, vous
     //             avez uniquement le droit d'utiliser l'opérateur ++.
     //
-    static void linearize(Node* tree, Node*& list, size_t& cnt) noexcept {
+    static void linearize(Node *tree, Node *&list, size_t &cnt) noexcept {
         /* ... */
     }
 
@@ -500,9 +500,9 @@ public:
     //
     void balance() noexcept {
         size_t cnt = 0;
-        Node* list = nullptr;
-        linearize(_root,list,cnt);
-        arborize(_root,list,cnt);
+        Node *list = nullptr;
+        linearize(_root, list, cnt);
+        arborize(_root, list, cnt);
     }
 
 private:
@@ -518,7 +518,7 @@ private:
     // @param cnt  nombre d'elements de la liste que l'on doit utiliser pour
     //             arboriser le sous arbre
     //
-    static void arborize(Node*& tree, Node*& list, size_t cnt) noexcept {
+    static void arborize(Node *&tree, Node *&list, size_t cnt) noexcept {
     }
 
 public:
@@ -529,8 +529,8 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
-    template < typename Fn >
-    void visitPre (Fn f) {
+    template<typename Fn>
+    void visitPre(Fn f) {
         visitPre(f, _root);
     }
 
@@ -541,8 +541,8 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
-    template < typename Fn >
-    void visitSym (Fn f) {
+    template<typename Fn>
+    void visitSym(Fn f) {
         visitSym(f, _root);
     }
 
@@ -553,10 +553,11 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
-    template < typename Fn >
-    void visitPost (Fn f) {
+    template<typename Fn>
+    void visitPost(Fn f) {
         visitPost(f, _root);
     }
+
 private:
     //
     // @brief Parcours pre-ordonne de l'arbre
@@ -566,9 +567,9 @@ private:
     //          f(n->key);
     // @param r La racine du sous arbre
     //
-    template < typename Fn >
-    static void visitPre (Fn f, Node* r) {
-        if(r != nullptr){
+    template<typename Fn>
+    static void visitPre(Fn f, Node *r) {
+        if (r != nullptr) {
             f(r->key);
             visitPre(f, r->left);
             visitPre(f, r->right);
@@ -583,9 +584,9 @@ private:
     //          f(n->key);
     // @param r La racine du sous arbre
     //
-    template < typename Fn >
-    void visitSym (Fn f, Node* r) {
-        if(r != nullptr){
+    template<typename Fn>
+    void visitSym(Fn f, Node *r) {
+        if (r != nullptr) {
             visitSym(f, r->left);
             f(r->key);
             visitSym(f, r->right);
@@ -600,9 +601,9 @@ private:
     //          f(n->key);
     // @param r La racine du sous arbre
     //
-    template < typename Fn >
-    void visitPost (Fn f, Node* r) {
-        if(r != nullptr){
+    template<typename Fn>
+    void visitPost(Fn f, Node *r) {
+        if (r != nullptr) {
             visitPost(f, r->left);
             visitPost(f, r->right);
             f(r->key);
@@ -623,28 +624,28 @@ public:
         string l1, l2;
 
         size_t W = 11;
-        while( getline(ss3,l1) )
+        while (getline(ss3, l1))
             if (l1.length() > W) W = l1.length();
 
         displayKeys(ss1);
 
         cout << "\n";
         cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W) << "-" << setfill(' ') << "+" << endl;
-        cout << "| "<< left << setw(W) << "key" << "| " << setw(W) << "nbElements" << "|" << endl;
+        cout << "| " << left << setw(W) << "key" << "| " << setw(W) << "nbElements" << "|" << endl;
         cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W) << "-" << setfill(' ') << "+" << endl;
-        while( getline(ss1,l1) and getline(ss2, l2) ) {
-            cout << "| "<< left << setw(W) << l1 << "| " << setw(W) << l2 << "|" << endl;
+        while (getline(ss1, l1) and getline(ss2, l2)) {
+            cout << "| " << left << setw(W) << l1 << "| " << setw(W) << l2 << "|" << endl;
         }
         cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W) << "-" << setfill(' ') << "+" << endl;
 
     }
 
-    void displayKeys(ostream& os = cout) const {
-        display([](Node* n) -> const_reference { return n->key; }, os);
+    void displayKeys(ostream &os = cout) const {
+        display([](Node *n) -> const_reference { return n->key; }, os);
     }
 
-    void displayCounts(ostream& os = cout) const {
-        display([](Node* n) -> size_t { return n->nbElements; }, os);
+    void displayCounts(ostream &os = cout) const {
+        display([](Node *n) -> size_t { return n->nbElements; }, os);
     }
 
     //
@@ -652,25 +653,25 @@ public:
     // un noeud sentinelle newLevel qui traque les
     // changements de niveaux
     //
-    template <typename Fn>
-    void display (Fn func, ostream& os = cout ) const {
-        Node* newLevel = (Node*) -1;
+    template<typename Fn>
+    void display(Fn func, ostream &os = cout) const {
+        Node *newLevel = (Node *) -1;
         // addresse non nulle dont on est sur qu'elle ne contient pas
         // vraiment un Node. Utilisée comme sentinelle.
 
-        queue<Node*> Q;
+        queue<Node *> Q;
         Q.push(_root);
         Q.push(newLevel);
 
-        while(!Q.empty()) {
-            Node* cur = Q.front();
+        while (!Q.empty()) {
+            Node *cur = Q.front();
             Q.pop();
 
-            if(cur == newLevel) {
+            if (cur == newLevel) {
                 os << endl;
-                if(!Q.empty())
+                if (!Q.empty())
                     Q.push(newLevel);
-            } else if(cur == nullptr) {
+            } else if (cur == nullptr) {
                 os << "- ";
             } else {
                 os << func(cur) << " ";

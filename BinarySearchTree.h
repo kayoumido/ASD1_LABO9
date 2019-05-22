@@ -411,7 +411,7 @@ public:
     // @return le nombre d'elements de l'arbre
     //
     size_t size() const noexcept {
-        return 0;
+        return _root->nbElements;
     }
 
     //

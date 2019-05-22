@@ -365,17 +365,27 @@ private:
             }
                 // Hardest case, do the Hibbard technique
             else {
+
                 // Call a method to fetch the minimum node of the right subtree
                 Node *&minNode = chercherMinNode(r->right);
-                // Swap the key of minNode and currentNode
-                value_type tmp = minNode->key;
-                (reference) minNode->key = r->key; // Force the const value to change
-                (reference) r->key = tmp; // Force the const value to change
+                // Swap current node with minNode
+                swapNodes(r, minNode);
                 // Delete the minElement of the right subtree that is now the element we swapped
                 deleteMin(r->right);
             }
             return true;
         }
+    }
+
+    /**
+     * @brief Permet de swap correctement deux noeuds
+     * @param a Un des deux Node a échanger (passé en pointeur référence)
+     * @param b Un des deux Node a échanger (passé en pointeur référence)
+     */
+    static void swapNodes(Node*& a, Node*& b){
+        std::swap(a->left, b->left);
+        std::swap(a->right, b->right);
+        std::swap(a, b);
     }
 
     static Node *&chercherMinNode(Node *&r) {
@@ -396,7 +406,6 @@ public:
     // @return le nombre d'elements de l'arbre
     //
     size_t size() const noexcept {
-        /* ... */
         return 0;
     }
 

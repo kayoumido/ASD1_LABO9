@@ -388,6 +388,11 @@ private:
         std::swap(a, b);
     }
 
+    /**
+     * @brief Recherche et retourne le noeud qui contient la clé minimum dans l'arbre
+     * @param r Le sous arbre dans lequel chercher
+     * @return Le noeud qui contient la clé minimum dans l'arbre en tant que pointeur référence
+     */
     static Node *&chercherMinNode(Node *&r) {
         // Recursive call while we are not the node with minimum key
         if (r->left != nullptr) {

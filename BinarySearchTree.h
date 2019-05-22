@@ -181,14 +181,23 @@ private:
         // This is a leaf, we can create the new node
         if (r == nullptr) {
             r = new Node{key};
+            return true;
         }
-            // Go to left branch (key to add lower than the node key)
+        // Go to left branch (key to add lower than the node key)
         else if (key < r->key) {
-            insert(r->left, key);
+
+            if (insert(r->left, key)) {
+                ++r->nbElements;
+                return true;
+            }
+
         }
             // Go to right branch (key to add greater than the node key)
         else if (key > r->key) {
-            insert(r->right, key);
+            if (insert(r->right, key)) {
+                ++r->nbElements;
+                return true;
+            }
         }
         // Else : the key already is on the tree
 

@@ -313,6 +313,7 @@ private:
         // Recursive call while we are not the node with minimum key
         if (r->left != nullptr) {
             deleteMin(r->left);
+            --r->nbElements;
         }
             // Here, the node is the node with the minimum key
         else {
@@ -347,14 +348,21 @@ private:
 
         // Need to search in the left subtree
         if (key < r->key) {
-            deleteElement(r->left, key);
+            if (deleteElement(r->left, key)) {
+                --r->nbElements;
+                return true;
+            }
         }
             // Need to search in the right subtree
         else if (key > r->key) {
-            deleteElement(r->right, key);
+            if (deleteElement(r->right, key)) {
+                --r->nbElements;
+                return true;
+            }
         }
             // Key found !
         else {
+            --r->nbElements;
             // If left or right child is nullptr, destroy the current node and the opposite child takes the place of the current node
             if (r->left == nullptr) {
                 r->~Node();
@@ -385,6 +393,7 @@ private:
     static void swapNodes(Node*& a, Node*& b){
         std::swap(a->left, b->left);
         std::swap(a->right, b->right);
+        std::swap(a->nbElements, b->nbElements);
         std::swap(a, b);
     }
 
@@ -431,7 +440,13 @@ public:
     }
 
 private:
+    //sous arbre
     //
+    // @param r la racine du sous arbre. ne peut pas etre nullptr
+    // @param n la position n
+    //
+    // @return une reference a la cle en position n par ordre croissant des
+    // elements
     // @brief cle en position n dans un sous arbre
     //
     // @param r la racine du sous arbre. ne peut pas etre nullptr
@@ -442,8 +457,18 @@ private:
     //
     static const_reference nth_element(Node *r, size_t n) noexcept {
         assert(r != nullptr);
-        /* ... */
-        return -1;
+
+        // Node was found!
+        if (n == r->left->nbElements)
+            return r->key;
+
+        if (n <= r->left->nbElements) {
+            return nth_element(r->left, n);
+        }
+
+        if (n > r->left->nbElements) {
+            return nth_element(r->right, (n - r->left->nbElements));
+        }
     }
 
 public:
@@ -471,8 +496,19 @@ private:
     // @return la position entre 0 et size()-1, size_t(-1) si la cle est absente
     //
     static size_t rank(Node *r, const_reference key) noexcept {
-        /* ... */
-        return -1;
+
+        if (r == nullptr)
+            return size_t(-1);
+
+        if (key < r->key) {
+            return rank(r->left, key);
+        }
+
+        if (key > r->key) {
+            return rank(r->right, key) + r->left->nbElements + 1;
+        }
+
+        return r->left->nbElements + 1;
     }
 
 public:

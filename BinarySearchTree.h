@@ -72,8 +72,16 @@
          *  @param other le BinarySearchTree à copier
          *
          */
-        BinarySearchTree(BinarySearchTree &other) {
-            /* ... */
+        BinarySearchTree(BinarySearchTree &other) : BinarySearchTree() {
+            copy(other._root);
+        }
+
+        void copy(const Node *N) {
+            if (N) {
+                insert(N->key);
+                copy(N->left);
+                copy(N->right);
+            }
         }
 
         /**
@@ -108,7 +116,6 @@
             this->_root = other._root;
 
             other._root = nullptr;
-
         }
 
         /**

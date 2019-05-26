@@ -138,7 +138,8 @@
         // récursive privée deleteSubTree(Node*)
         //
         ~BinarySearchTree() {
-            deleteSubTree(_root);
+            if (_root != nullptr)
+                deleteSubTree(_root);
         }
 
     private:

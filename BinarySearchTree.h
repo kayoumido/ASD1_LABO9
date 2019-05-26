@@ -91,7 +91,7 @@
          *
          */
         BinarySearchTree &operator=(const BinarySearchTree &other) {
-            /* ... */
+            copy(other._root);
             return *this;
         }
 

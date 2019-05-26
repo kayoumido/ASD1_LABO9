@@ -102,7 +102,9 @@
          *
          */
         void swap(BinarySearchTree &other) noexcept {
-            /* ... */
+            Node* root = this->_root;
+            this->_root = other._root;
+            other._root = root;
         }
 
         /**

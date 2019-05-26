@@ -103,8 +103,12 @@
          *  @param other le BST dont on vole le contenu
          *
          */
-        BinarySearchTree(BinarySearchTree &&other) noexcept {
-            /* ... */
+        BinarySearchTree(BinarySearchTree &&other) noexcept : BinarySearchTree() {
+
+            this->_root = other._root;
+
+            other._root = nullptr;
+
         }
 
         /**

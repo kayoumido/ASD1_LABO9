@@ -14,14 +14,14 @@ int main() {
     tree.insert(13);
     tree.display();
 
-//    cout << "nth element: " << tree.nth_element(0) << endl;
-//    cout << "nth element: " << tree.nth_element(1) << endl;
-//    cout << "nth element: " << tree.nth_element(2) << endl;
+    cout << "nth element: " << tree.nth_element(0) << endl;
+    cout << "nth element: " << tree.nth_element(1) << endl;
+    cout << "nth element: " << tree.nth_element(2) << endl;
     cout << "nth element: " << tree.nth_element(3) << endl;
     cout << "nth element: " << tree.nth_element(4) << endl;
-//    cout << "nth element: " << tree.nth_element(5) << endl;
-//    cout << "nth element: " << tree.nth_element(6) << endl;
-//    cout << "nth element: " << tree.nth_element(7) << endl;
+    cout << "nth element: " << tree.nth_element(5) << endl;
+    cout << "nth element: " << tree.nth_element(6) << endl;
+    cout << "nth element: " << tree.nth_element(7) << endl;
 
 //    cout << boolalpha << tree.contains(7) << endl;
 //

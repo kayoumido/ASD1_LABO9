@@ -390,7 +390,7 @@ private:
      * @param a Un des deux Node a échanger (passé en pointeur référence)
      * @param b Un des deux Node a échanger (passé en pointeur référence)
      */
-    static void swapNodes(Node*& a, Node*& b){
+    static void swapNodes(Node*& a, Node*& b) {
         std::swap(a->left, b->left);
         std::swap(a->right, b->right);
         std::swap(a->nbElements, b->nbElements);
@@ -458,17 +458,18 @@ private:
     static const_reference nth_element(Node *r, size_t n) noexcept {
         assert(r != nullptr);
 
-        // Node was found!
-        if (n == r->left->nbElements)
+        size_t nbLeftElements = r->left != nullptr ? r->left->nbElements : 0;
+
+        if (n == nbLeftElements)
             return r->key;
 
-        if (n <= r->left->nbElements) {
+        // check if the element we're looking for is on the left or right side of the tree
+        if (n < nbLeftElements)
             return nth_element(r->left, n);
-        }
 
-        if (n > r->left->nbElements) {
-            return nth_element(r->right, (n - r->left->nbElements));
-        }
+        if (n > nbLeftElements)
+            return nth_element(r->right, n - nbLeftElements - 1);
+
     }
 
 public:

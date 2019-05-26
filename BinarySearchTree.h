@@ -114,9 +114,7 @@
          *
          */
         BinarySearchTree(BinarySearchTree &&other) noexcept : BinarySearchTree() {
-
             this->_root = other._root;
-
             other._root = nullptr;
         }
 
@@ -127,7 +125,9 @@
          *
          */
         BinarySearchTree &operator=(BinarySearchTree &&other) noexcept {
-            /* ... */
+            this->_root = other._root;
+            other._root = nullptr;
+
             return *this;
         }
 

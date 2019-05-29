@@ -73,6 +73,7 @@
          *
          */
         BinarySearchTree(BinarySearchTree &other) : BinarySearchTree() {
+
             copy(other._root);
         }
 
@@ -90,8 +91,15 @@
          *  @param other le BinarySearchTree à copier
          *
          */
-        BinarySearchTree &operator=(const BinarySearchTree &other) {
-            copy(other._root);
+        BinarySearchTree &operator=(BinarySearchTree &other) {
+
+            if (this->_root == other._root)
+                return *this;
+
+            BinarySearchTree tmpTree(other);
+
+            swap(tmpTree);
+
             return *this;
         }
 
@@ -125,6 +133,12 @@
          *
          */
         BinarySearchTree &operator=(BinarySearchTree &&other) noexcept {
+
+            if (this->_root == other._root)
+                return *this;
+
+//            BinarySearchTree tmpTree(other);
+
             this->_root = other._root;
             other._root = nullptr;
 

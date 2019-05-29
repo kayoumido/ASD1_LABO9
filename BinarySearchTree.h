@@ -72,7 +72,7 @@
          *  @param other le BinarySearchTree à copier
          *
          */
-        BinarySearchTree(BinarySearchTree &other) : BinarySearchTree() {
+        BinarySearchTree(const BinarySearchTree &other) : BinarySearchTree() {
 
             copy(other._root);
         }
@@ -91,13 +91,12 @@
          *  @param other le BinarySearchTree à copier
          *
          */
-        BinarySearchTree &operator=(BinarySearchTree &other) {
+        BinarySearchTree &operator=(const BinarySearchTree &other) {
 
             if (this->_root == other._root)
                 return *this;
 
             BinarySearchTree tmpTree(other);
-
             swap(tmpTree);
 
             return *this;
@@ -137,10 +136,8 @@
             if (this->_root == other._root)
                 return *this;
 
-//            BinarySearchTree tmpTree(other);
-
-            this->_root = other._root;
-            other._root = nullptr;
+//            BinarySearchTree tmpTree(std::move(other));
+            swap(other);
 
             return *this;
         }

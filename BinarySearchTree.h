@@ -460,7 +460,13 @@ public:
     // la fonction recursive nth_element(Node*, n)
     //
     const_reference nth_element(size_t n) const {
-        /* ... */
+
+        if (_root == nullptr)
+            throw std::logic_error("Il n'y a aucun éléments dans l'arbre!");
+
+        if (n > size())
+            throw std::logic_error("Index trop grand");
+
         return nth_element(_root, n);
     }
 
@@ -481,8 +487,6 @@ private:
     // elements
     //
     static const_reference nth_element(Node *r, size_t n) noexcept {
-        assert(r != nullptr);
-
         size_t leftCount = r->left != nullptr ? r->left->nbElements : 0;
 
         if (n == leftCount)

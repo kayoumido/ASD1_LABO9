@@ -77,6 +77,12 @@ public:
         copy(other._root);
     }
 
+    /**
+     * @brief Copie les noeauds d'un arbre ds l'objet courrant
+     * @complexity O(n)
+     *
+     * @param N noeaud racine a copier
+     */
     void copy(const Node *N) {
         if (N) {
             insert(N->key);
@@ -89,7 +95,6 @@ public:
      *  @brief Opérateur d'affectation par copie.
      *
      *  @param other le BinarySearchTree à copier
-     *
      */
     BinarySearchTree &operator=(const BinarySearchTree &other) {
 
@@ -104,9 +109,9 @@ public:
 
     /**
      *  @brief Echange le contenu avec un autre BST
+     * @complexity O(1)
      *
      *  @param other le BST avec lequel on echange le contenu
-     *
      */
     void swap(BinarySearchTree &other) noexcept {
         Node *root = this->_root;
@@ -118,7 +123,6 @@ public:
      *  @brief constructeur de copie par déplacement
      *
      *  @param other le BST dont on vole le contenu
-     *
      */
     BinarySearchTree(BinarySearchTree &&other) noexcept : BinarySearchTree() {
         this->_root = other._root;
@@ -129,14 +133,12 @@ public:
      *  @brief Opérateur d'affectation par déplacement.
      *
      *  @param other le BST dont on vole le contenu
-     *
      */
     BinarySearchTree &operator=(BinarySearchTree &&other) noexcept {
 
         if (this->_root == other._root)
             return *this;
 
-//            BinarySearchTree tmpTree(std::move(other));
         swap(other);
 
         return *this;
@@ -471,13 +473,7 @@ public:
     }
 
 private:
-    //sous arbre
-    //
-    // @param r la racine du sous arbre. ne peut pas etre nullptr
-    // @param n la position n
-    //
-    // @return une reference a la cle en position n par ordre croissant des
-    // elements
+
     // @brief cle en position n dans un sous arbre
     //
     // @param r la racine du sous arbre. ne peut pas etre nullptr

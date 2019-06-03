@@ -61,6 +61,7 @@ public:
 
     /**
      *  @brief Constructeur par défaut. Construit un arbre vide
+     *  @remark COmplexité : O(1)
      */
     BinarySearchTree() : _root(nullptr) {
         // Nothing to do...
@@ -70,18 +71,17 @@ public:
      *  @brief Constucteur de copie.
      *
      *  @param other le BinarySearchTree à copier
-     *
+     *  @remark Complexité : O(n)
      */
     BinarySearchTree(const BinarySearchTree &other) : BinarySearchTree() {
-
         copy(other._root);
     }
 
     /**
      * @brief Copie les noeauds d'un arbre ds l'objet courrant
-     * @complexity O(n)
      *
      * @param N noeaud racine a copier
+     * @remark Complexité : O(n)
      */
     void copy(const Node *N) {
         if (N) {
@@ -95,12 +95,13 @@ public:
      *  @brief Opérateur d'affectation par copie.
      *
      *  @param other le BinarySearchTree à copier
+     *  @Remark Complexité : O(n)
      */
     BinarySearchTree &operator=(const BinarySearchTree &other) {
-
+        // Si on essaye de faire une affectation entre 2 objet qui sont au meme emplacement mémoire -> retourne l'objet
         if (this->_root == other._root)
             return *this;
-
+        // Appel le constructeur de copie dans un objet temp, et swap l'objet courant avec le temp
         BinarySearchTree tmpTree(other);
         swap(tmpTree);
 
@@ -109,9 +110,9 @@ public:
 
     /**
      *  @brief Echange le contenu avec un autre BST
-     * @complexity O(1)
      *
      *  @param other le BST avec lequel on echange le contenu
+     *  @remark Complexité : O(1)
      */
     void swap(BinarySearchTree &other) noexcept {
         Node *root = this->_root;
@@ -123,8 +124,10 @@ public:
      *  @brief constructeur de copie par déplacement
      *
      *  @param other le BST dont on vole le contenu
+     *  @remark Complexité : O(n)
      */
     BinarySearchTree(BinarySearchTree &&other) noexcept : BinarySearchTree() {
+        // Utilise l'opérateur d'affectation par copie créé aupréalable et met a null l'objet en parametre apres avoir été copié
         this->_root = other._root;
         other._root = nullptr;
     }
@@ -133,12 +136,14 @@ public:
      *  @brief Opérateur d'affectation par déplacement.
      *
      *  @param other le BST dont on vole le contenu
+     *  @remark Complexité : O(1)
      */
     BinarySearchTree &operator=(BinarySearchTree &&other) noexcept {
-
+        // Si on essaye de faire une affectation entre 2 objet qui sont au meme emplacement mémoire -> retourne l'objet
         if (this->_root == other._root)
             return *this;
 
+        // On swap l'objet en param avec l'objet courant
         swap(other);
 
         return *this;
@@ -149,6 +154,7 @@ public:
     //
     // Ne pas modifier mais écrire la fonction
     // récursive privée deleteSubTree(Node*)
+    // @remark Complexité : O(n)
     //
     ~BinarySearchTree() {
         if (_root != nullptr)
@@ -161,19 +167,19 @@ private:
     //
     // @param r la racine du sous arbre à détruire.
     //          peut éventuellement valoir nullptr
+    // @remark Complexité : O(n)
     //
     static void deleteSubTree(Node *r) noexcept {
-        // Go inside all left Node (if not a leaf)
+        // On va d'abord dans tous les noeud de gauche (si pas une feuille)
         if (r->left != nullptr) {
             deleteSubTree(r->left);
         }
-
-        // At this point, we finished to go inside all left node, we can go inside right node (if not a leaf)
+        // La on a fini pour le coté gauche, on va donc dans le coté droit (si pas une feuille)
         if (r->right != nullptr) {
             deleteSubTree(r->right);
         }
 
-        // We have a leaf, so we can delete it
+        // A ce moment on a une feuille, on peut donc supprimer le noeud
         r->~Node();
     }
 
@@ -185,6 +191,7 @@ public:
     //
     // Ne pas modifier mais écrire la fonction
     // récursive privée insert(Node*&,const_reference)
+    // @remark Complexité moyenne : O(log(n))
     //
     void insert(const_reference key) {
         insert(_root, key);
@@ -204,30 +211,34 @@ private:
     // x peut éventuellement valoir nullptr en entrée.
     // la fonction peut modifier x, reçu par référence, si nécessaire
     //
+    // @remark Complexité moyenne : O(log(n))
+    //
     static bool insert(Node *&r, const_reference key) {
-        // This is a leaf, we can create the new node
+        // Cas triviale : On a atteint une feuille, on peut créer le nouveau noeud
         if (r == nullptr) {
             r = new Node{key};
             return true;
         }
-            // Go to left branch (key to add lower than the node key)
+
+        // On va d'abord dans le sous-arbre gauche (clé à ajouter plus petite que la clé du noeud)
         else if (key < r->key) {
 
             if (insert(r->left, key)) {
+                // incrément du nb élément si on a bien inséré une nouvelle clé
                 ++r->nbElements;
                 return true;
             }
 
         }
-            // Go to right branch (key to add greater than the node key)
+        // Ensuite on va dans le sous-arbre droite (clé à ajouter plus grande que la clé du noeud)
         else if (key > r->key) {
             if (insert(r->right, key)) {
+                // incrément du nb élément si on a bien inséré une nouvelle clé
                 ++r->nbElements;
                 return true;
             }
         }
-        // Else : the key already is on the tree
-
+        // Sinon la clé existe déjà !
         return false;
     }
 
@@ -241,6 +252,7 @@ public:
     //
     // Ne pas modifier mais écrire la fonction
     // récursive privée contains(Node*,const_reference)
+    // @remark Complexité moyenne : O(log(n))
     //
     bool contains(const_reference key) const noexcept {
         return contains(_root, key);
@@ -254,15 +266,23 @@ private:
     // @param r   la racine du sous-arbre
     //
     // @return vrai si la cle trouvee, faux sinon.
+    // @remark Complexité moyenne : O(log(n)
     //
     static bool contains(Node *r, const_reference key) noexcept {
+        // Cas trivial
         if (r == nullptr) {
             return false;
-        } else if (key < r->key) {
+        }
+        // si la clé cherchée est plus petite que la clé du noeud en cours, on va rechercher dans le ss-arbre gauche
+        else if (key < r->key) {
             contains(r->left, key);
-        } else if (key > r->key) {
+        }
+        // si la clé cherchée est plus grande que la clé du noeud en cours, on va rechercher dans le ss-arbre droit
+        else if (key > r->key) {
             contains(r->right, key);
-        } else {
+        }
+        // si pas nullptr, pas plus petite ou plus grande, on l'a trouvée
+        else {
             return true;
         }
     }
@@ -276,6 +296,8 @@ public:
     // @exception std::logic_error si necessaire
     //
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
+    //
+    // @remark Complexité moyenne : O(log(n))
     //
     const_reference min() const {
         if (_root == nullptr) {
@@ -291,6 +313,8 @@ public:
     // @exception std::logic_error si necessaire
     //
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
+    //
+    // @remark Complexité moyenne : O(log(n))
     //
     void deleteMin() {
         if (_root == nullptr) {
@@ -323,8 +347,10 @@ private:
     // @brief Recherche de la cle minimale.
     // @param r la racine du sous arbre
     // @return une const reference a la cle minimale
+    // @remark Complexité moyenne : O(log(n))
     //
     static const_reference min(Node *r) {
+        // La clé min est forcément le dernier noeud du sous-arbre gauche
         if (r->left != nullptr) {
             min(r->left);
         } else {
@@ -335,22 +361,24 @@ private:
     //
     // @brief Supprime le plus petit element de l'arbre.
     // @param r La racine du sous arbre
+    // @remark Complexité moyenne : O(log(n))
     //
     static void deleteMin(Node *&r) {
-        // Recursive call while we are not the node with minimum key
+        // Appel récursif tant qu'on a pas le noeud avec la clé min (dernier noeud a gauche)
         if (r->left != nullptr) {
             deleteMin(r->left);
+            // Décrément du nbElement en remontant les appels récursif, pour la mise a jour
             --r->nbElements;
         }
-            // Here, the node is the node with the minimum key
+        // Ici, le noeud est celui qui a la clé la plus petite
         else {
-            // Call the node destructor
+            // On détruit le noeud
             r->~Node();
-            // The node has right child -> Right child takes the place of the current node
+            // Si le noeud a un enfant droit, celui-ci prend ca place
             if (r->right != nullptr) {
                 r = r->right;
             }
-                // The node with minimum key is a leaf, set it as nullptr
+            // Si le noeud avec la clé min est une feuille, on le met a nullptr
             else {
                 r = nullptr;
             }
@@ -366,31 +394,35 @@ private:
     // si l'element n'est pas present, la fonction ne modifie pas
     // l'arbre mais retourne false. Si l'element est present, elle
     // retourne vrai
+    // @remark Complexité moyenne : O(log(n))
     //
     static bool deleteElement(Node *&r, const_reference key) noexcept {
-        // Key not found
+        // Cas triviale, clé pas trouvée
         if (r == nullptr) {
             return false;
         }
 
-        // Need to search in the left subtree
+        // Besoin de recherché dans le sous arbre de gauche
         if (key < r->key) {
             if (deleteElement(r->left, key)) {
+                // Si on a supprimé un noeud, on va décrémenter le nbElement du noeud courant pour le mettre à jour
                 --r->nbElements;
                 return true;
             }
         }
-            // Need to search in the right subtree
+        // Besoin de recherché dans le sous arbre de gauche
         else if (key > r->key) {
             if (deleteElement(r->right, key)) {
+                // Si on a supprimé un noeud, on va décrémenter le nbElement du noeud courant pour le mettre à jour
                 --r->nbElements;
                 return true;
             }
         }
-            // Key found !
+        // Clé trouvée
         else {
+            // on va décrémenter le nbElement du noeud courant pour le mettre à jour
             --r->nbElements;
-            // If left or right child is nullptr, destroy the current node and the opposite child takes the place of the current node
+            // Cas simple, on a un des deux enfants null, on detruit le noeud courant et l'enfant prend la place du noeud courant
             if (r->left == nullptr) {
                 r->~Node();
                 r = r->right;
@@ -398,14 +430,14 @@ private:
                 r->~Node();
                 r = r->left;
             }
-                // Hardest case, do the Hibbard technique
+            // Cas compliqué (on a les deux enfants) on utilise la technique de Hibbard
             else {
-
+                // Appel une métode qui nous retourne un ptr référence sur le noeud le plus petit du ss-arbre droit
                 // Call a method to fetch the minimum node of the right subtree
                 Node *&minNode = chercherMinNode(r->right);
-                // Swap current node with minNode
+                // On swap le noeud courant et le noeud le plus petit du ss arbre droite
                 swapNodes(r, minNode);
-                // Delete the minElement of the right subtree that is now the element we swapped
+                // On supprime l'élément minimum du ss arbre droit (celui qu on vient d'etre swap, donc celui qu on veut)
                 deleteMin(r->right);
             }
             return true;
@@ -416,6 +448,7 @@ private:
      * @brief Permet de swap correctement deux noeuds
      * @param a Un des deux Node a échanger (passé en pointeur référence)
      * @param b Un des deux Node a échanger (passé en pointeur référence)
+     * @remark COmplexité : O(1)
      */
     static void swapNodes(Node *&a, Node *&b) {
         std::swap(a->left, b->left);
@@ -428,13 +461,12 @@ private:
      * @brief Recherche et retourne le noeud qui contient la clé minimum dans l'arbre
      * @param r Le sous arbre dans lequel chercher
      * @return Le noeud qui contient la clé minimum dans l'arbre en tant que pointeur référence
+     * @remark Complexité moyenne : O(log(n))
      */
     static Node *&chercherMinNode(Node *&r) {
-        // Recursive call while we are not the node with minimum key
         if (r->left != nullptr) {
             chercherMinNode(r->left);
         }
-            // Here, the node is the node with the minimum key
         else {
             return r;
         }
@@ -445,6 +477,7 @@ public:
     // @brief taille de l'arbre
     //
     // @return le nombre d'elements de l'arbre
+    // @remark Complexité : O(1)
     //
     size_t size() const noexcept {
         return _root->nbElements;
@@ -507,6 +540,7 @@ public:
     //
     // Ne pas modifier mais écrire la fonction
     // récursive privée rank(Node*,const_reference)
+    // @remark Complexité moyenne : O(log(n))
     //
     size_t rank(const_reference key) const noexcept {
         return rank(_root, key);
@@ -520,6 +554,7 @@ private:
     // @param r la racine du sous arbre
     //
     // @return la position entre 0 et size()-1, size_t(-1) si la cle est absente
+    // @remark Complexité moyenne : O(log(n))
     //
     static size_t rank(Node *r, const_reference key) noexcept {
 
@@ -555,6 +590,8 @@ public:
     // fonction recursive linearize(Node*, Node*&, size_t&) utilisée par
     // la methode publique arborize
     //
+    // @remark Complexité : O(n)
+    //
     void linearize() noexcept {
         size_t cnt = 0;
         Node *list = nullptr;
@@ -574,19 +611,21 @@ private:
     //             cree. l'effet de la fonction doit etre d'ajouter le nombre
     //             d'elements du sous-arbre de racine tree. Cependant, vous
     //             avez uniquement le droit d'utiliser l'opérateur ++.
+    // @remark Complexité : O(n)
     //
     static void linearize(Node *tree, Node *&list, size_t &cnt) noexcept {
         if (tree == nullptr) {
             return;
         }
-
         linearize(tree->right, list, cnt);
-
+        // Stock dans l'enfant droit, le noeud de la list et la list contient le noeud courant
         tree->right = list;
         list = tree;
+        // Mise à jour du count et du nb des éléments du noeud courant
         ++cnt;
         tree->nbElements = cnt;
 
+        // à chaque enfant gauche, on ba donné nullptr car on veut un arbre sous forme de liste
         linearize(tree->left, list, cnt);
         tree->left = nullptr;
     }
@@ -619,13 +658,14 @@ private:
     //                   elements
     // @param cnt  nombre d'elements de la liste que l'on doit utiliser pour
     //             arboriser le sous arbre
+    // @Remark Complexité : ???
     //
     static void arborize(Node *&tree, Node *&list, size_t cnt) noexcept {
         if(cnt == 0){
             tree = nullptr;
             return;
         }
-
+        // On va d'abord arboriser les sous arbres de gauche, puis la racine et ensuite droite
         Node* rg = nullptr;
         arborize(rg, list, (cnt-1)/2);
         tree = list;
@@ -643,6 +683,8 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
+    // @remark Complexité : O(n)
+    //
     template<typename Fn>
     void visitPre(Fn f) {
         visitPre(f, _root);
@@ -654,7 +696,7 @@ public:
     // @param f une fonction capable d'être appelée en recevant une cle
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
-    //
+    // @remark Complexité : O(n)
     template<typename Fn>
     void visitSym(Fn f) {
         visitSym(f, _root);
@@ -667,6 +709,7 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
+    // @remark Complexité : O(n)
     template<typename Fn>
     void visitPost(Fn f) {
         visitPost(f, _root);
@@ -680,6 +723,7 @@ private:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     // @param r La racine du sous arbre
+    // @remark Complexité : O(n)
     //
     template<typename Fn>
     static void visitPre(Fn f, Node *r) {
@@ -697,6 +741,7 @@ private:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     // @param r La racine du sous arbre
+    // @remark Complexité : O(n)
     //
     template<typename Fn>
     void visitSym(Fn f, Node *r) {
@@ -714,6 +759,7 @@ private:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     // @param r La racine du sous arbre
+    // @remark Complexité : O(n)
     //
     template<typename Fn>
     void visitPost(Fn f, Node *r) {

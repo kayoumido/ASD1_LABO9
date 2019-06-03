@@ -605,6 +605,7 @@ public:
         Node *list = nullptr;
         linearize(_root, list, cnt);
         arborize(_root, list, cnt);
+        std::cout << "caca" << '\n';
     }
 
 private:
@@ -621,6 +622,35 @@ private:
     //             arboriser le sous arbre
     //
     static void arborize(Node *&tree, Node *&list, size_t cnt) noexcept {
+      // std::cout << std::endl;
+      // std::cout << "nbElem = " << tree->nbElements << " bruh, cnt = " << cnt << std::endl;
+      // std::cout << "list = " << list << std::endl;
+      if (cnt <= 0 || tree == nullptr || list == nullptr)
+        return;
+
+      // tree = RG après cette fonction
+      arborize(tree,list, ((cnt-1)/2));
+
+      // std::cout << std::endl;
+      // std::cout << "nbElem = " << tree->nbElements << " dicks, cnt = " << cnt << std::endl;
+
+      // garde la valeur de RG (racine du sous arbre gauche)
+      Node *rg = tree;
+      // tree = L
+      tree = list;
+      // attache le sous arbre à gauche du noeud
+      tree->left = rg;
+      // avance la liste à l'élément d'après
+      // list = list->right;
+
+      Node *newRight =  tree;
+
+      // gère la partie droite de l'arbre
+      arborize(newRight, list->right, cnt / 2);
+      tree->nbElements = cnt;
+      tree->right = newRight;
+      // std::cout << std::endl;
+      // std::cout << "nbElem = " << tree->nbElements << " prout, cnt = " << cnt << std::endl;
     }
 
 public:

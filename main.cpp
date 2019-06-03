@@ -4,14 +4,14 @@
 int main() {
 
     BinarySearchTree<int> tree;
-    tree.insert(11);
     tree.insert(5);
-    tree.insert(4);
     tree.insert(2);
+    tree.insert(1);
+    tree.insert(3);
+    tree.insert(4);
+    tree.insert(7);
     tree.insert(6);
-    tree.insert(12);
-    tree.insert(15);
-    tree.insert(13);
+
 
     cout << endl;
 
@@ -19,10 +19,11 @@ int main() {
     tree.display();
 
     cout << endl;
-
+    cout << "Linearize" << endl;
+    tree.linearize();
+    tree.display();
     cout << "Test balance temp" << endl;
     tree.balance();
-    tree.linearize();
     tree.display();
     cout << endl;
 

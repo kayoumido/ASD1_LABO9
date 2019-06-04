@@ -448,7 +448,7 @@ private:
      * @brief Permet de swap correctement deux noeuds
      * @param a Un des deux Node a échanger (passé en pointeur référence)
      * @param b Un des deux Node a échanger (passé en pointeur référence)
-     * @remark COmplexité : O(1)
+     * @remark Complexité : O(1)
      */
     static void swapNodes(Node *&a, Node *&b) {
         std::swap(a->left, b->left);
@@ -493,12 +493,13 @@ public:
     //
     // ajoutez le code de gestion des exceptions, puis mettez en oeuvre
     // la fonction recursive nth_element(Node*, n)
+    // @remark Complexité : O(log(n))
     //
     const_reference nth_element(size_t n) const {
 
+        // gestion des exceptions
         if (_root == nullptr)
             throw std::logic_error("Il n'y a aucun éléments dans l'arbre!");
-
         if (n > size())
             throw std::logic_error("Index trop grand");
 
@@ -518,13 +519,18 @@ private:
     static const_reference nth_element(Node *r, size_t n) noexcept {
         size_t leftCount = r->left != nullptr ? r->left->nbElements : 0;
 
+        // si la position est égale au nombre d'éléments a gauche, on a trouvé notre Node
         if (n == leftCount)
             return r->key;
 
         // check if the element we're looking for is on the left or right side of the tree
+        // check pour savoir si l'on doit chercher la valeur a gauche ou a droite de l'arbre
+        // si la position est plus petite que le nbre d'éléments a gauche, il faut aller a gauche
         if (n < leftCount)
             return nth_element(r->left, n);
 
+        // si la position est plus grande que le nbre d'éléments a gauche, il faut aller a droite
+        //  et l'on soustrait le nbre d'élément a gauche à la position
         if (n > leftCount)
             return nth_element(r->right, n - leftCount - 1);
 
@@ -562,14 +568,12 @@ private:
             return size_t(-1);
 
         size_t leftCount = r->left != nullptr ? r->left->nbElements : 0;
-
+        
         if (key < r->key)
             return rank(r->left, key);
 
-
         if (key > r->key)
             return rank(r->right, key) + leftCount + 1;
-
 
         if (key == r->key)
             return leftCount;

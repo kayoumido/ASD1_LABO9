@@ -1,8 +1,14 @@
-//
-//  Binary Search Tree
-//
-//  Copyright (c) 2017 Olivier Cuisenaire. All rights reserved.
-//
+/**
+-----------------------------------------------------------------------------------
+Laboratoire : 09
+\file       BinarySearchTree.h
+\author     Loïc Dessaules, Doran Kayoumi, Gabrielle Thurnherr
+\date       04/06/2019
+\brief      Classe représentant un arbre binaire de recherche, avec toutes les méthodes associées
+Compilateur MinGW-gcc 6.3.0
+
+Copyright (c) 2017 Olivier Cuisenaire. All rights reserved.
+**/
 
 #include <cstdlib>
 #include <iostream>
@@ -523,7 +529,6 @@ private:
         if (n == leftCount)
             return r->key;
 
-        // check if the element we're looking for is on the left or right side of the tree
         // check pour savoir si l'on doit chercher la valeur a gauche ou a droite de l'arbre
         // si la position est plus petite que le nbre d'éléments a gauche, il faut aller a gauche
         if (n < leftCount)
@@ -662,14 +667,14 @@ private:
     //                   elements
     // @param cnt  nombre d'elements de la liste que l'on doit utiliser pour
     //             arboriser le sous arbre
-    // @Remark Complexité : ???
+    // @Remark Complexité : O(n)
     //
     static void arborize(Node *&tree, Node *&list, size_t cnt) noexcept {
         if(cnt == 0){
             tree = nullptr;
             return;
         }
-        // On va d'abord arboriser les sous arbres de gauche, puis la racine et ensuite droite
+        // On va d'abord arboriser les sous arbres de gauche, ensuite droite
         Node* rg = nullptr;
         arborize(rg, list, (cnt-1)/2);
         tree = list;
